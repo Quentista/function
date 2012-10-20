@@ -18,7 +18,7 @@ Function::Function (QWidget *pwgt) : QWidget(pwgt)
     m_enterAbsS = new QLineEdit;
     m_enterStep = new QLineEdit;
 
-    m_table = new QTableWidget (10,2);
+    m_table = new QTableWidget(10,2);
 
     m_butRun = new QPushButton ("Run");
 
@@ -62,11 +62,16 @@ void Function::slotButtonClicked()
     double m_x2 =m_enterAbsS->text().toDouble();
     double m_st = m_enterStep->text().toDouble();
     double m_y=0;
+
+    int n = ((m_x2 - m_x1)/m_st)+1;
+
+    m_table->setRowCount(n);
+    m_table->setColumnCount(2);
+
     for (i =0; m_x1<=m_x2; ++i)
     {
         m_strX.setNum(m_x1);
         m_tItemX = new QTableWidgetItem(m_strX.arg(i).arg(0));
-
 
         m_y = m_x1*m_x1 + m_x1;
         m_strY.setNum(m_y);
@@ -74,8 +79,8 @@ void Function::slotButtonClicked()
 
         m_x1 = m_x1 + m_st;
 
+
         m_table->setItem(i,0, m_tItemX);
         m_table->setItem(i,1, m_tItemY);
     }
 }
-
