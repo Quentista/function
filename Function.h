@@ -11,33 +11,26 @@ class QTableWidgetItem;
 
 class Function : public QWidget
 {
-    Q_OBJECT
-
-
+	Q_OBJECT
 public:
-    Function (QWidget* pwgt = 0);
-
-
+	Function (QWidget* pwgt = 0);
 public slots:
-    void slotButtonClicked();
-
-
+	void calculate();
 private:
+	QLabel* m_head;
+	QLabel* m_abscissaF;
+	QLabel* m_abscissaS;
+	QLabel* m_step;
+	QLabel* m_error;
 
-    QLabel* m_head;
-    QLabel* m_abscissaF;
-    QLabel* m_abscissaS;
-    QLabel* m_step;
+	QLineEdit* m_enterAbsF;
+	QLineEdit* m_enterAbsS;
+	QLineEdit* m_enterStep;
 
-    QLineEdit* m_enterAbsF;
-    QLineEdit* m_enterAbsS;
-    QLineEdit* m_enterStep;
+	QPushButton* m_butRun;
 
-    QPushButton* m_butRun;
-
-    QTableWidget* m_table;
-    QTableWidgetItem* m_tItemX;
-    QTableWidgetItem* m_tItemY;
-
+	QTableWidget* m_table;
+	QTableWidgetItem* m_tItemX;
+	QTableWidgetItem* m_tItemY;
 };
 #endif // FUNCTION_H

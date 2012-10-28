@@ -2,11 +2,11 @@ TEMPLATE = app
 TARGET = Function
 
 SOURCES += \
-    main.cpp \
-    Function.cpp
+	main.cpp \
+	Function.cpp
 
 HEADERS += \
-    Function.h
+	Function.h
 
 QT += core gui
 

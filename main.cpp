@@ -3,14 +3,13 @@
 
 int main(int argc, char** argv)
 {
-    QApplication app (argc, argv);
+	QApplication app (argc, argv);
 
 
-    Function func;
+	Function func;
+	func.resize(600,300);
+	func.show();
 
-    func.resize(600,300);
-    func.show();
-
-    return app.exec();
+	return app.exec();
 }
 
