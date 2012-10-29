@@ -30,7 +30,7 @@ Function::Function (QWidget *pwgt) : QWidget(pwgt)
 	this->connect(m_butRun, SIGNAL(clicked()), SLOT (calculate()));
 
 
-	//Layout setup
+//Layout setup
 
 	QVBoxLayout* mainLayout = new QVBoxLayout;
 	QHBoxLayout* firstLayout = new QHBoxLayout;
@@ -65,34 +65,33 @@ void Function::calculate()
 	double x1 =m_enterAbsF->text().toDouble(&checkX1);
 	double x2 =m_enterAbsS->text().toDouble(&checkX2);
 	double step = m_enterStep->text().toDouble(&checkS);
-	double y=0;
+	//double y=0;
 
 	if (x1<=x2 && step>0 && checkX1 && checkX2 && checkS)
 	{
-		int n = ((x2 - x1)/step)+1;
+		int j=0;
+		int n = ((x2 - x1)/step)+2;
 		m_table->setRowCount(n);
 		m_table->setColumnCount(2);
 
-		QString m_strX;
-		QString m_strY;
-
 		m_table->show();
-		for (int i =0; x1<=x2; x1+=step, ++i)
-		{
-			m_strX.setNum(x1);
-			m_tItemX = new QTableWidgetItem(m_strX);
 
-			y = x1*x1 + x1;
+		count(&x1, &x2, &step, &j);
+		
+		if (x1<x2)
+		{
+			QString m_strX;
+			QString m_strY;
+			double y=0;
+			m_strX.setNum(x2);
+			m_tItemX = new QTableWidgetItem(m_strX);
+	
+			y = x2*x2 + x2;
 			m_strY.setNum(y);
 			m_tItemY = new QTableWidgetItem(m_strY);
-
-			m_table->setItem(i,0, m_tItemX);
-			m_table->setItem(i,1, m_tItemY);
-
-			if( (i%100)==0 )
-			{
-				qApp->processEvents();
-			}
+	
+			m_table->setItem(j,0, m_tItemX);
+			m_table->setItem(j,1, m_tItemY);
 		}
 	}
 	else
@@ -101,3 +100,28 @@ void Function::calculate()
 		m_error->show();
 	}
 }
+
+void Function::count(double *c_x1, double *c_x2, double *c_step, int* i)
+{
+	for (*i =0; (*c_x1)<=(*c_x2); (*c_x1)+=(*c_step), ++(*i))
+	{
+		QString m_strX;
+		QString m_strY;
+		double y=0;
+		m_strX.setNum(*c_x1);
+		m_tItemX = new QTableWidgetItem(m_strX);
+
+		y = (*c_x1)*(*c_x1) + (*c_x1);
+		m_strY.setNum(y);
+		m_tItemY = new QTableWidgetItem(m_strY);
+
+		m_table->setItem(*i,0, m_tItemX);
+		m_table->setItem(*i,1, m_tItemY);
+
+		if( ((*i)%100)==0 )
+		{
+			qApp->processEvents();
+		}
+	}
+}
+

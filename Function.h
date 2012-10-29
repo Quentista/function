@@ -17,6 +17,8 @@ public:
 public slots:
 	void calculate();
 private:
+	void count(double* c_x1, double* c_x2, double* c_step, int* i);
+	
 	QLabel* m_head;
 	QLabel* m_abscissaF;
 	QLabel* m_abscissaS;
