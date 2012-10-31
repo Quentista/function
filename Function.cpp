@@ -30,7 +30,7 @@ Function::Function (QWidget *pwgt) : QWidget(pwgt)
 	this->connect(m_butRun, SIGNAL(clicked()), SLOT (calculate()));
 
 
-	//Layout setup
+//Layout setup
 
 	QVBoxLayout* mainLayout = new QVBoxLayout;
 	QHBoxLayout* firstLayout = new QHBoxLayout;
@@ -56,6 +56,12 @@ Function::Function (QWidget *pwgt) : QWidget(pwgt)
 	setLayout(mainLayout);
 }
 
+double f(double x)
+{
+	return (x)*(x) + (x);
+}
+
+
 void Function::calculate()
 {
 	bool checkX1;
@@ -65,34 +71,37 @@ void Function::calculate()
 	double x1 =m_enterAbsF->text().toDouble(&checkX1);
 	double x2 =m_enterAbsS->text().toDouble(&checkX2);
 	double step = m_enterStep->text().toDouble(&checkS);
-	double y=0;
 
 	if (x1<=x2 && step>0 && checkX1 && checkX2 && checkS)
 	{
-		int n = ((x2 - x1)/step)+1;
+		int n = ((x2 - x1)/step)+2;
 		m_table->setRowCount(n);
 		m_table->setColumnCount(2);
-
-		QString m_strX;
-		QString m_strY;
-
+		
 		m_table->show();
-		for (int i =0; x1<=x2; x1+=step, ++i)
+		
+		double lastX = 0;
+		this->count(x1, x2, step, &lastX);
+		
+		if (lastX<x2)
 		{
-			m_strX.setNum(x1);
-			m_tItemX = new QTableWidgetItem(m_strX);
-
-			y = x1*x1 + x1;
-			m_strY.setNum(y);
-			m_tItemY = new QTableWidgetItem(m_strY);
-
-			m_table->setItem(i,0, m_tItemX);
-			m_table->setItem(i,1, m_tItemY);
-
-			if( (i%100)==0 )
-			{
-				qApp->processEvents();
-			}
+			this->calculateStep(n-1,x2);
+		}
+	}
+	else if(x1>=x2 && step>0 && checkX1 && checkX2 && checkS)
+	{
+		int n = ((x1-x2)/step)+2;
+		m_table->setRowCount(n);
+		m_table->setColumnCount(2);
+		
+		m_table->show();
+		
+		double lastX = 0;
+		this->count(x2, x1, step, &lastX);
+		
+		if (lastX<x1)
+		{
+			this->calculateStep(n-1,x1);
 		}
 	}
 	else
@@ -101,3 +110,37 @@ void Function::calculate()
 		m_error->show();
 	}
 }
+
+void Function::calculateStep(int i, double x)
+{
+	QString m_strX;
+	m_strX.setNum(x);
+	m_tItemX = new QTableWidgetItem(m_strX);
+	
+	QString m_strY;
+	m_strY.setNum(f(x));
+	m_tItemY = new QTableWidgetItem(m_strY);
+
+	m_table->setItem(i,0, m_tItemX);
+	m_table->setItem(i,1, m_tItemY);
+}
+
+void Function::count(double x1, double x2, double step, double* lastX)
+{
+	double x = x1;
+	for (int i = 0; x<=x2; x += step, ++i)
+	{
+		this->calculateStep(i, x);
+		
+		if(lastX != NULL)
+		{
+			(*lastX) = x;
+		}
+		
+		if( ((i)%100)==0 )
+		{
+			qApp->processEvents();
+		}
+	}
+}
+

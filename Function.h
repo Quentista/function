@@ -14,9 +14,12 @@ class Function : public QWidget
 	Q_OBJECT
 public:
 	Function (QWidget* pwgt = 0);
+	void calculateStep(int i, double x);
 public slots:
 	void calculate();
 private:
+	void count(double x1, double x2, double step, double* lastX = NULL);
+	
 	QLabel* m_head;
 	QLabel* m_abscissaF;
 	QLabel* m_abscissaS;
